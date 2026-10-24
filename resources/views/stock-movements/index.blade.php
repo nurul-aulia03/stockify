@@ -6,6 +6,7 @@
     <title>Riwayat Stok | Stockify</title>
     <style>
         * { box-sizing: border-box; }
+
         body {
             margin: 0;
             padding: 30px;
@@ -13,7 +14,9 @@
             background: #f7f5ff;
             color: #30264a;
         }
+
         .container { max-width: 1200px; margin: auto; }
+
         .header {
             display: flex;
             justify-content: space-between;
@@ -22,8 +25,11 @@
             gap: 15px;
             margin-bottom: 24px;
         }
+
         h1 { margin: 0 0 7px; font-size: 28px; }
+
         .subtitle { margin: 0; color: #817895; }
+
         .back {
             background: #6d43c1;
             color: white;
@@ -31,6 +37,7 @@
             text-decoration: none;
             border-radius: 10px;
         }
+
         .panel {
             background: white;
             border-radius: 16px;
@@ -38,7 +45,13 @@
             box-shadow: 0 5px 22px #34205c0b;
             margin-bottom: 22px;
         }
-        form { display: flex; gap: 10px; flex-wrap: wrap; }
+
+        form {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
         input {
             flex: 1;
             min-width: 200px;
@@ -47,6 +60,7 @@
             border-radius: 9px;
             font-size: 14px;
         }
+
         button {
             border: 0;
             background: #7950cf;
@@ -55,9 +69,21 @@
             border-radius: 9px;
             cursor: pointer;
         }
-        .reset { color: #7653b7; text-decoration: none; align-self: center; }
+
+        .reset {
+            color: #7653b7;
+            text-decoration: none;
+            align-self: center;
+        }
+
         .table-wrap { overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; min-width: 850px; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 850px;
+        }
+
         th {
             background: #f4efff;
             color: #62439c;
@@ -66,11 +92,14 @@
             text-transform: uppercase;
             letter-spacing: .4px;
         }
+
         th, td {
             padding: 15px 12px;
             border-bottom: 1px solid #f0edf6;
         }
+
         td { font-size: 14px; }
+
         .badge {
             display: inline-block;
             padding: 5px 9px;
@@ -80,8 +109,15 @@
             font-size: 12px;
             font-weight: 600;
         }
+
         .qty { font-weight: 700; }
-        .empty { text-align: center; color: #817895; padding: 35px; }
+
+        .empty {
+            text-align: center;
+            color: #817895;
+            padding: 35px;
+        }
+
         .footer {
             display: flex;
             justify-content: space-between;
@@ -92,6 +128,7 @@
             color: #817895;
             font-size: 13px;
         }
+
         .pagination a, .pagination span {
             display: inline-block;
             padding: 7px 11px;
@@ -101,10 +138,12 @@
             color: #7043bd;
             background: #f4efff;
         }
+
         .pagination span[aria-current="page"] {
             background: #7043bd;
             color: white;
         }
+
         @media (max-width: 600px) {
             body { padding: 16px; }
             .panel { padding: 14px; }
@@ -119,7 +158,11 @@
             <h1>↻ Riwayat Stok</h1>
             <p class="subtitle">Pantau setiap perubahan stok produk di Stockify.</p>
         </div>
-        <a class="back" href="{{ route('dashboard') }}">← Dashboard</a>
+
+        <a class="back"
+           href="{{ auth()->user()->role === 'staff' ? route('staff.dashboard') : route('dashboard') }}">
+            ← Dashboard
+        </a>
     </div>
 
     <div class="panel">
@@ -130,7 +173,9 @@
                 value="{{ $search }}"
                 placeholder="Cari produk, SKU, jenis perubahan, atau pengguna..."
             >
+
             <button type="submit">Cari</button>
+
             @if($search)
                 <a class="reset" href="{{ route('stock-movements.index') }}">Reset</a>
             @endif
@@ -152,6 +197,7 @@
                         <th>Catatan</th>
                     </tr>
                 </thead>
+
                 <tbody>
                 @forelse($movements as $movement)
                     <tr>

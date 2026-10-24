@@ -33,13 +33,33 @@ Route::post('/logout', [AuthController::class, 'logout'])
 
 /*
 |--------------------------------------------------------------------------
+| Dashboard berdasarkan role
+|--------------------------------------------------------------------------
+*/
+Route::get('/dashboard', function () {
+    $role = auth()->user()->role;
+
+    if ($role === 'staff') {
+        return redirect()->route('staff.dashboard');
+    }
+
+    if ($role === 'customer') {
+        return redirect()->route('customer.dashboard');
+    }
+
+    if ($role === 'admin') {
+        return app(DashboardController::class)->index();
+    }
+
+    abort(403, 'Akses ditolak.');
+})->middleware('auth')->name('dashboard');
+
+/*
+|--------------------------------------------------------------------------
 | Admin Only
 |--------------------------------------------------------------------------
 */
 Route::middleware(['auth', 'role:admin'])->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'index'])
-        ->name('dashboard');
-
     Route::resource('categories', CategoryController::class);
 
     Route::resource('suppliers', SupplierController::class)
@@ -75,6 +95,12 @@ Route::middleware(['auth', 'role:admin,staff'])->group(function () {
     Route::get('/stock-movements', [StockMovementController::class, 'index'])
         ->name('stock-movements.index');
 
+    Route::get('/orders', [OrderController::class, 'index'])
+        ->name('orders.index');
+
+    Route::get('/orders/{order}', [OrderController::class, 'show'])
+        ->name('orders.show');
+
     Route::get('/staff/dashboard', [RoleDashboardController::class, 'staff'])
         ->name('staff.dashboard');
 });
@@ -105,10 +131,4 @@ Route::middleware(['auth', 'role:customer'])->group(function () {
 
     Route::post('/cart/checkout', [CartController::class, 'checkout'])
         ->name('customer.cart.checkout');
-
-    Route::get('/orders', [OrderController::class, 'index'])
-        ->name('orders.index');
-
-    Route::get('/orders/{order}', [OrderController::class, 'show'])
-        ->name('orders.show');
 });
